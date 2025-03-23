@@ -1,3 +1,36 @@
+// Game Constants
+const GAME_CONSTANTS = {
+	SCORE_BUBBLE: 10,
+	SCORE_SUPER_BUBBLE: 50,
+	SCORE_GHOST_COMBO: 200
+};
+
+// Game State
+let gameState = {
+	keydown: false,
+	pause: false,
+	lock: false,
+	highscore: 0,
+	score: 0,
+	scoreBubble: 10,
+	scoreSuperBubble: 50,
+	scoreGhostCombo: 200,
+	lives: 2,
+	gameover: false,
+	level: 1,
+	levelNextTimer: -1,
+	levelNextState: 0
+};
+
+// Time Management
+let timeManager = {
+	generalTimer: -1,
+	gameTime: 0,
+	levelTime: 0,
+	lifeTime: 0,
+	fruitsTime: 0
+};
+
 var KEYDOWN = false;
 var PAUSE = false;
 var LOCK = false;
@@ -33,7 +66,6 @@ function blinkHelp() {
 }
 
 function initGame(newgame) { 
-
 	if (newgame) { 
 		stopPresentation();
 		stopTrailer();
@@ -48,32 +80,7 @@ function initGame(newgame) {
 		$("#home").hide();
 		$("#panel").show();
 		
-		var ctx = null;
-		var canvas = document.getElementById('canvas-panel-title-pacman');
-		canvas.setAttribute('width', '38');
-		canvas.setAttribute('height', '32');
-		if (canvas.getContext) { 
-			ctx = canvas.getContext('2d');
-		}
-		
-		var x = 15;
-		var y = 16;
-		
-		ctx.fillStyle = "#fff200";
-		ctx.beginPath();
-		ctx.arc(x, y, 14, (0.35 - (3 * 0.05)) * Math.PI, (1.65 + (3 * 0.05)) * Math.PI, false);
-		ctx.lineTo(x - 5, y);
-		ctx.fill();
-		ctx.closePath();
-		
-		x = 32;
-		y = 16;
-		
-		ctx.fillStyle = "#dca5be";
-		ctx.beginPath();
-		ctx.arc(x, y, 4, 0, 2 * Math.PI, false);
-		ctx.fill();
-		ctx.closePath();
+		drawPacmanTitle();
 	}
 
 	initBoard();
@@ -97,6 +104,31 @@ function initGame(newgame) {
 	lifes();
 	
 	ready();
+}
+
+function drawPacmanTitle() {
+	const canvas = document.getElementById('canvas-panel-title-pacman');
+	canvas.setAttribute('width', '38');
+	canvas.setAttribute('height', '32');
+	
+	if (canvas.getContext) {
+		const ctx = canvas.getContext('2d');
+		
+		// Draw Pacman
+		ctx.fillStyle = "#fff200";
+		ctx.beginPath();
+		ctx.arc(15, 16, 14, (0.35 - (3 * 0.05)) * Math.PI, (1.65 + (3 * 0.05)) * Math.PI, false);
+		ctx.lineTo(10, 16);
+		ctx.fill();
+		ctx.closePath();
+		
+		// Draw Dot
+		ctx.fillStyle = "#dca5be";
+		ctx.beginPath();
+		ctx.arc(32, 16, 4, 0, 2 * Math.PI, false);
+		ctx.fill();
+		ctx.closePath();
+	}
 }
 
 function win() { 
@@ -298,12 +330,15 @@ function gameover() {
 	TIME_LIFE = 0;
 	TIME_FRUITS = 0;
 
+	// Show proof button if score is greater than 0
+	if (SCORE > 0) {
+		$("#proofBtn").show();
+	} else {
+		$("#proofBtn").hide();
+	}
+
 	LIFES = 2;
 	LEVEL = 1;
-	
-	// Show proof button only when game is over
-	$("#proofBtn").show();
-	$("#proofBtn").prop('disabled', false);
 }
 
 function message(m) { 
@@ -355,97 +390,175 @@ function score(s, type) {
 	}
 }
 
-// Add proof generation logic
-$(document).ready(function() {
-    let proofSubmitted = false; // Flag to track if proof has been submitted
+// Proof Generation Functions
+function showProofPopup() {
+    $('#proof-overlay').fadeIn();
+    $('#proof-popup').fadeIn();
+    startBinaryAnimation();
+    startProgressBar();
+}
 
-    $("#proofBtn").click(async function() {
-        const proofBtn = $(this);
-        
-        // If proof already submitted, disable button
-        if (proofSubmitted) {
-            proofBtn.prop('disabled', true);
+function hideProofPopup() {
+    $('#proof-overlay').fadeOut();
+    $('#proof-popup').fadeOut();
+    stopBinaryAnimation();
+}
+
+let binaryAnimationInterval;
+function startBinaryAnimation() {
+    const binaryContainer = $('#binary-animation');
+    binaryContainer.empty();
+
+    function generateBinary() {
+        return Array.from({length: 70}, () => Math.random() < 0.5 ? '0' : '1').join('');
+    }
+
+    function addBinaryLine() {
+        const lines = binaryContainer.children().length;
+        if (lines >= 5) {
+            binaryContainer.children().first().remove();
+        }
+        binaryContainer.append(`<div>${generateBinary()}</div>`);
+    }
+
+    // Initial lines
+    for (let i = 0; i < 5; i++) {
+        addBinaryLine();
+    }
+
+    // Start animation
+    binaryAnimationInterval = setInterval(addBinaryLine, 100);
+}
+
+function stopBinaryAnimation() {
+    if (binaryAnimationInterval) {
+        clearInterval(binaryAnimationInterval);
+    }
+}
+
+function startProgressBar() {
+    const progress = $('#progress');
+    progress.css('width', '0%');
+    let width = 0;
+
+    const interval = setInterval(() => {
+        if (width >= 100) {
+            clearInterval(interval);
             return;
         }
+        width += 2;
+        progress.css('width', width + '%');
+    }, 100);
+}
 
-        proofBtn.prop('disabled', true);
+function showProofResult(data) {
+    $('#game-score span').text(SCORE);
+    $('#cycles-count').text(`Cycles: ${data.cycles}`);
+    $('#proof-id').text(`Proof ID: ${data.proof_id}`);
+    $('#proof-result').fadeIn();
 
-        try {
-            // Validate score
-            if (SCORE <= 0) {
-                alert("Cannot generate proof for score 0 or negative. Please play the game first!");
-                proofBtn.prop('disabled', false);
-                return;
-            }
+    setTimeout(hideProofPopup, 5000);
+}
 
-            console.log("Requesting core proof generation for score:", SCORE);
+// Document ready handler
+$(document).ready(function() {
+    // Hide proof button by default
+    $("#proofBtn").hide();
 
-            const response = await fetch("http://pacman.tempestcrypto.net/api/prove", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ score: SCORE }),
-            });
+    // Remove old help button blinking
+    if (HELP_TIMER != -1) {
+        clearInterval(HELP_TIMER);
+        HELP_TIMER = -1;
+    }
+    // Hide old help button
+    $(".help-button").hide();
 
-            if (!response.ok) {
-                throw new Error(
-                    "An error occurred while generating the proof on the server."
-                );
-            }
-
-            const data = await response.json();
-            alert("Core Proof generated successfully!\nProof ID: " + data.proofId);
-            console.log("Generated Core Proof:", data);
-            
-            // Mark proof as submitted
-            proofSubmitted = true;
-        } catch (err) {
-            console.error("Core proof generation error:", err);
-            alert("Failed to generate Core Proof.");
-            proofBtn.prop('disabled', false);
-        }
-    });
-
-    // Add Play Again button logic
-    $("#playAgainBtn").click(function() {
-        // Reset proof submission flag
-        proofSubmitted = false;
-        
-        // Hide proof button
-        $("#proofBtn").hide();
-        
-        // Reset game
-        initGame(true);
-    });
-
-    // Add click handler for continue button
-    $("#continue-btn").click(function(e) {
+    // Add click handler for help button
+    $("#helpBtn").on("click", function(e) {
         e.preventDefault();
         e.stopPropagation();
-        $('#help').fadeOut("slow");
-        $('#help-overlay').fadeOut("slow");
-        $(".help-button").show();
-        if (PAUSE) {
-            resumeGame();
-        }
-    });
-    
-    // Update help button click handler
-    $(".help-button").click(function(e) { 
-        e.preventDefault();
-        e.stopPropagation();
-        if (!PACMAN_DEAD && !LOCK && !GAMEOVER) { 
-            $('#help').fadeIn("slow");
-            $('#help-overlay').fadeIn("slow");
-            $(".help-button").hide();
-            if ( $("#panel").css("display") !== "none") { 
+        if (!PACMAN_DEAD && !LOCK && !GAMEOVER) {
+            $('#help-overlay').fadeIn();
+            $('#help').fadeIn();
+            if ($("#panel").css("display") !== "none") {
                 pauseGame();
             }
         }
     });
 
-    // Prevent clicks on help from closing it
-    $("#help").click(function(e) {
+    // Add click handler for continue button
+    $("#continue-btn").on("click", function(e) {
         e.preventDefault();
         e.stopPropagation();
+        $('#help-overlay').fadeOut();
+        $('#help').fadeOut();
+        if (PAUSE) {
+            resumeGame();
+        }
+    });
+
+    // Add click handler for proof button
+    $("#proofBtn").on("click", async function() {
+        console.log("Proof button clicked");
+        const proofBtn = $(this);
+
+        try {
+            if (SCORE <= 0) {
+                alert("Score is 0 or negative. Please play the game to earn points before generating proof!");
+                return;
+            }
+
+            if (!GAMEOVER) {
+                alert("You can only generate proof after game over (losing all lives)!");
+                return;
+            }
+
+            proofBtn.prop('disabled', true);
+            showProofPopup();
+
+            const response = await fetch("http://pacman.tempestcrypto.net/api/prove", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ score: SCORE })
+            });
+
+            if (!response.ok) {
+                throw new Error("An error occurred while generating the proof on the server.");
+            }
+
+            const data = await response.json();
+            console.log("Proof generation response:", data);
+            showProofResult(data);
+
+        } catch (err) {
+            console.error("Core proof generation error:", err);
+            alert("Failed to generate Core Proof: " + err.message);
+            hideProofPopup();
+        } finally {
+            proofBtn.prop('disabled', false);
+        }
+    });
+
+    // Add click handler for play again button
+    $("#playAgainBtn").on("click", function() {
+        $("#proofBtn").hide();
+        initGame(true);
+    });
+
+    // Prevent clicks on popups from closing them
+    $("#help, #proof-popup").click(function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    });
+
+    // Close popups when clicking overlay
+    $("#help-overlay, #proof-overlay").click(function() {
+        $('#help-overlay').fadeOut();
+        $('#help').fadeOut();
+        $('#proof-overlay').fadeOut();
+        $('#proof-popup').fadeOut();
+        if (PAUSE) {
+            resumeGame();
+        }
     });
 });

@@ -290,26 +290,8 @@ h3 {
 	padding: 10px 25px 30px 65px;
 }
 
-.help-button { 
-	position: absolute;
-	text-align: center;
-	bottom: 8px;
-	right: 55px;
-	margin: auto;
-	font-size: 14px;
-	font-weight: bold;
-	text-transform: lowercase;
-	letter-spacing: 0.5px;
-	cursor: pointer;
-	color: #78abf7;
-	transition: color 1.5s;
-}
-.help-button.yo { 
-	color: #333;
-}
-#panel .help-button { 
-	top: -510px;
-	height: 25px;
+.help-button {
+    display: none !important;
 }
 
 /* New optimized help styles */
@@ -540,18 +522,6 @@ h3 {
 }
 
 /* Game Controls */
-#proofBtn, #playAgainBtn {
-    background: #000;
-    color: #fff;
-    padding: 10px 20px;
-    cursor: pointer;
-    border: 2px solid #fff;
-}
-
-#proofBtn {
-    display: none;
-}
-
 .game-controls {
     position: fixed;
     bottom: 20px;
@@ -560,4 +530,188 @@ h3 {
     display: flex;
     gap: 20px;
     z-index: 998;
+}
+
+.control-button {
+    background: #0000FF;
+    color: #FFFFFF;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    min-width: 120px;
+    text-align: center;
+}
+
+.control-button:hover {
+    background: #F4C030;
+    color: #000000;
+    transform: scale(1.05);
+}
+
+.control-button:disabled {
+    background: #666;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Overlay styles */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    display: none;
+}
+
+/* Popup styles */
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #000033;
+    border: 2px solid #0000FF;
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 1001;
+    color: #FFFFFF;
+    min-width: 400px;
+    max-width: 600px;
+    display: none;
+}
+
+.popup h2 {
+    color: #F4C030;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+/* Help menu styles */
+#help {
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+#help .help-content {
+    margin: 20px 0;
+}
+
+#help table {
+    width: 100%;
+    border-spacing: 10px;
+    margin-bottom: 20px;
+}
+
+#help table td:first-child {
+    color: #F4C030;
+    width: 40%;
+}
+
+#help table td {
+    padding: 5px 0;
+    font-size: 16px;
+}
+
+#help h3 {
+    color: #F4C030;
+    margin: 20px 0 10px;
+    font-size: 20px;
+}
+
+/* Proof generation popup styles */
+#proof-popup {
+    text-align: center;
+}
+
+#binary-animation {
+    font-family: monospace;
+    font-size: 14px;
+    margin: 20px 0;
+    height: 100px;
+    overflow: hidden;
+}
+
+#binary-animation div {
+    margin: 5px 0;
+    color: #00FF00;
+}
+
+#progress-container {
+    margin: 20px 0;
+}
+
+#progress-bar {
+    width: 100%;
+    height: 20px;
+    background: #000066;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+#progress {
+    width: 0%;
+    height: 100%;
+    background: #00FF00;
+    transition: width 0.3s ease;
+}
+
+#proof-result {
+    margin-top: 20px;
+    text-align: left;
+    padding: 15px;
+    background: #000066;
+    border-radius: 5px;
+}
+
+#proof-result div {
+    margin: 10px 0;
+    font-size: 16px;
+}
+
+#game-score {
+    color: #F4C030;
+    font-size: 20px !important;
+}
+
+#proof-id {
+    word-break: break-all;
+    color: #f4c030;
+    font-family: monospace;
+}
+
+/* Button styles */
+.button {
+    background: #0000FF;
+    color: #FFFFFF;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+    width: 100%;
+    transition: background 0.3s ease;
+}
+
+.button:hover {
+    background: #0000CC;
+}
+
+/* Help button styles */
+.help-button {
+    position: static;
+    bottom: auto;
+    right: auto;
+}
+
+.help-button.yo {
+    background: #F4C030;
+    color: #000000;
 }

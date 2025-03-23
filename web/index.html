@@ -202,36 +202,33 @@
 	
 		<div id="sound"></div>
 	
-		<div id="help-overlay"></div>
-		<div id="help">
-			<h2>Game Rules</h2>
-			<table>
-				<tr><td><span>Arrow Left</span><span class="colon">:</span><span>Move Left</span></td></tr>
-				<tr><td><span>Arrow Right</span><span class="colon">:</span><span>Move Right</span></td></tr>
-				<tr><td><span>Arrow Down</span><span class="colon">:</span><span>Move Down</span></td></tr>
-				<tr><td><span>Arrow Up</span><span class="colon">:</span><span>Move Up</span></td></tr>
-				<tr><td>&nbsp;</td></tr>
-				<tr><td><span>P</span><span class="colon">:</span><span>PAUSE</span></td></tr>
-			</table>
-
-			<h2>Scoring System</h2>
-			<table>
-				<tr><td><span>Dot</span><span class="colon">:</span><span>1 point</span></td></tr>
-				<tr><td><span>Power Pellet</span><span class="colon">:</span><span>10 points</span></td></tr>
-				<tr><td><span>Ghost (when scared)</span><span class="colon">:</span><span>100 points</span></td></tr>
-			</table>
-
-			<h2>Proof Submission Rules</h2>
-			<table>
-				<tr><td><span>1.</span><span> You must lose all 3 lives to submit proof</span></td></tr>
-				<tr><td><span>2.</span><span> You can only submit proof once per game</span></td></tr>
-				<tr><td><span>3.</span><span> Click "Generate Proof" button after game over</span></td></tr>
-				<tr><td><span>4.</span><span> Use "Play Again" to start a new game</span></td></tr>
-			</table>
-			
-			<div class="help-button-container">
-				<button id="continue-btn">Continue Game</button>
+		<div id="help-overlay" class="overlay" style="display: none;"></div>
+		<div id="help" class="popup" style="display: none;">
+			<h2>Game Controls</h2>
+			<div class="help-content">
+				<table>
+					<tr>
+						<td>Arrow Keys:</td>
+						<td>Move Pac-Man</td>
+					</tr>
+					<tr>
+						<td>P:</td>
+						<td>Pause Game</td>
+					</tr>
+				</table>
+				<h3>Proof Submission Rules</h3>
+				<table>
+					<tr>
+						<td>Score:</td>
+						<td>Must be greater than 0</td>
+					</tr>
+					<tr>
+						<td>Game State:</td>
+						<td>Must lose all lives (Game Over)</td>
+					</tr>
+				</table>
 			</div>
+			<button id="continue-btn" class="button">Continue Game</button>
 		</div>
 	
 		<div id="home">
@@ -246,7 +243,6 @@
 				<canvas id="canvas-presentation-clyde"></canvas><div id="presentation-character-clyde">- pokey</div><div id="presentation-name-clyde">"clyde"</div>
 			</div>
 			<canvas id="trailer"></canvas>
-			<div class="help-button">- help -</div>
 			<a class="sound" href="javascript:void(0);" data-sound="on"><img src="img/sound-on.png" alt="" border="0"></a>
 			<a class="github" target="_blank" href="https://github.com/trsonfu"><img src="img/github.png" alt="GitHub - Jack - Pac-Man"></a>
 		</div>
@@ -285,12 +281,30 @@
 			<div class="help-button">- help -</div>
 			<a class="sound" href="javascript:void(0);" data-sound="on"><img src="img/sound-on.png" alt="" border="0"></a>
 			<div class="game-controls">
-				<div id="proofBtn">Generate Proof</div>
-				<div id="playAgainBtn">Play Again</div>
+				<button id="proofBtn" class="control-button">Generate Proof</button>
+				<button id="playAgainBtn" class="control-button">Play Again</button>
+				<button id="helpBtn" class="control-button">Help</button>
 			</div>
 		</div>
 	</div>
 </div>
+	
+	<div id="proof-overlay" class="overlay" style="display: none;"></div>
+	<div id="proof-popup" class="popup" style="display: none;">
+		<h2>Generating Proof</h2>
+		<div id="binary-animation"></div>
+		<div id="progress-container">
+			<div id="progress-bar">
+				<div id="progress"></div>
+			</div>
+		</div>
+		<div id="proof-result" style="display: none;">
+			<div id="game-score">Score: <span>0</span></div>
+			<div id="proof-status">%% Successfully generated proof!</div>
+			<div id="cycles-count">Cycles: 0</div>
+			<div id="proof-id">Proof ID: </div>
+		</div>
+	</div>
 	
 	</body>
 	
