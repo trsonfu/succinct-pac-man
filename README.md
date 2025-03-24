@@ -6,7 +6,7 @@ A classic Pac-Man game implementation with SP1 zero-knowledge proof integration 
 
 ## 🤖 Demo Play
 
-- http://pacman.tempestcrypto.net/
+- https://pacman.tempestcrypto.net/
 
 ## 🎮 Game Features
 
