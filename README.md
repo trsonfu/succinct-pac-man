@@ -2,7 +2,11 @@
 
 A classic Pac-Man game implementation with SP1 zero-knowledge proof integration for cryptographic verification of game scores. The game features a modern UI, responsive design, and secure proof generation system.
 
-![Pac-Man Game Screenshot](img/githubpreview.png)
+![Pac-Man Game Screenshot](web/img/githubpreview.png)
+
+## 🤖 Demo Play
+
+- http://pacman.tempestcrypto.net/
 
 ## 🎮 Game Features
 
