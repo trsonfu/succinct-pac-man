@@ -73,6 +73,12 @@ npm start
 
 ### Production Deployment
 
+*. Build the program:
+```bash
+cd program
+cargo prove build
+```
+
 #### Backend Setup
 
 1. Navigate to the backend directory:
@@ -85,15 +91,10 @@ cd server
 npm install
 ```
 
-3. Configure environment variables:
+3. Start the backend server:
 ```bash
-cp .env.example .env
-# Edit .env with your configuration
-```
-
-4. Start the backend server:
-```bash
-npm start
+cd server
+node server.js
 ```
 
 #### Frontend Setup
@@ -113,11 +114,12 @@ npm install
 npm run build
 ```
 
-4. Create Nginx File (For Ubuntu Server Deploy):
+### Deploy on Ubuntu Server
+1. Create Nginx File (For Ubuntu Server Deploy):
 ```bash
 nano /etc/nginx/sites-available/pacman/
 ```
-5. Nginx config
+2. Nginx config
 ```bash
 server {
     listen 80;
@@ -147,14 +149,14 @@ server {
 
 ```
 
-6. Set up Nginx:
+3. Set up Nginx:
 ```bash
 sudo ln -s /etc/nginx/sites-available/pacman.tempestcrypto.net /etc/nginx/sites-enabled/
 sudo nginx -t
 sudo systemctl restart nginx
 ```
 
-7. Set proper permissions:
+4. Set proper permissions:
 ```bash
 sudo chown -R www-data:www-data /var/www/succinct-pac-man
 sudo chmod -R 755 /var/www/succinct-pac-man
