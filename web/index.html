@@ -206,6 +206,7 @@
 		<div id="help" class="popup" style="display: none;">
 			<h2>Game Controls</h2>
 			<div class="help-content">
+				<h3>Game Controls</h3>
 				<table>
 					<tr>
 						<td>Arrow Keys:</td>
@@ -216,17 +217,48 @@
 						<td>Pause Game</td>
 					</tr>
 				</table>
-				<h3>Proof Submission Rules</h3>
+
+				<h3>Game Rules</h3>
+				<ul>
+					<li>Use arrow keys to control Pac-Man's movement</li>
+					<li>Collect dots to earn points (10 points each)</li>
+					<li>Collect power pellets to temporarily make ghosts vulnerable</li>
+					<li>Eat vulnerable ghosts for bonus points (200 points each)</li>
+					<li>You have 3 lives to play</li>
+					<li>Game ends when you lose all lives</li>
+				</ul>
+
+				<h3>Scoring System</h3>
 				<table>
 					<tr>
-						<td>Score:</td>
-						<td>Must be greater than 0</td>
+						<td>Regular Dots:</td>
+						<td>10 points</td>
 					</tr>
 					<tr>
-						<td>Game State:</td>
-						<td>Must lose all lives (Game Over)</td>
+						<td>Power Pellets:</td>
+						<td>50 points</td>
+					</tr>
+					<tr>
+						<td>Vulnerable Ghosts:</td>
+						<td>200 points each</td>
 					</tr>
 				</table>
+
+				<h3>Proof Generation Requirements</h3>
+				<ul>
+					<li>You must have a positive score (greater than 0)</li>
+					<li>Game must be in Game Over state (all lives lost)</li>
+					<li>Click the "Generate Proof" button to create your proof</li>
+					<li>Proof will include your final score and game state</li>
+				</ul>
+
+				<h3>Tips</h3>
+				<ul>
+					<li>Use power pellets strategically to eat multiple ghosts</li>
+					<li>Watch ghost patterns to avoid collisions</li>
+					<li>Try to maximize your score before losing all lives</li>
+					<li>Remember: You can only generate proof after game over!</li>
+				</ul>
 			</div>
 			<button id="continue-btn" class="button">Continue Game</button>
 		</div>
